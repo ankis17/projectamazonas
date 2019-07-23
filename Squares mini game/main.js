@@ -25,7 +25,7 @@ const drawRectangle = () => {
 	squareShown.x = x;
 	squareShown.y = y;
 	ctx.rect(x,y, rectWidth, rectHeight);
-	ctx.fillStyle = "#000000";
+	ctx.fillStyle = "#AAA";
 	ctx.fill();
     ctx.closePath();
 }
