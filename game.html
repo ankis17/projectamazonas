@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<style>
+		canvas {
+			border: 1px solid #d3d3d3;
+			background-color: #f1f1f1;
+		}
+	</style>
+</head>
+
+<body>
+	<br>
+
+	<canvas id="canvas" height="700" width="1000"></canvas>
+
+	<p>Type the words as they fall down the screen - finish typing before they hit the bottom for points!<br>
+		<input type="text" id="word" onkeyup="updatePts()">
+
+		<p id="pts"></p>
+
+		<script>
+
+			var myGameArea = {
+				start: function () {
+					this.canvas = document.getElementById("canvas");
+					this.context = this.canvas.getContext("2d");
+					this.points = 0;
+					document.getElementById("pts").innerHTML = "Points: " + myGameArea.points;
+					document.body.insertBefore(this.canvas, document.body.childNodes[0]);
+					this.interval = setInterval(updateGameArea, 20);
+					this.timer = 4000;
+					this.interval2 = setInterval(addWord, this.timer);
+					setTimeout(endGame, 20000);
+				},
+				decreaseTimer: function () {
+					if (this.timer > 500) {
+						this.timer -= 300;
+					}
+				},
+				stop: function () {
+					clearInterval(this.interval);
+				},
+				clear: function () {
+					canvas = document.getElementById("canvas");
+					this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+				}
+			}
+
+			function component(color, text, speed) {
+				this.text = text;
+				this.width = 10 * (text.length + 1);
+				this.height = 30;
+				this.x = Math.random() * (document.getElementById("canvas").width - this.width);
+				this.y = 0;
+				this.speed = 0.5;
+				this.update = function () {
+					ctx = myGameArea.context;
+					ctx.fillStyle = color;
+					ctx.fillRect(this.x, this.y, this.width, this.height);
+					ctx.font = "30px Arial"
+					ctx.fillStyle = "black";
+					ctx.fillText(text, this.x, this.y + (this.height - 5), this.width);
+				}
+				this.newPos = function () {
+					this.y += this.speed;
+					this.checkAtBtm();
+				}
+				this.checkAtBtm = function () {
+					var bottom = myGameArea.canvas.height - this.height;
+					if (this.y > bottom) {
+						this.y = bottom;
+						this.speed = 0;
+						for (let i = 0; i < myGamePieces.length; i++) {
+							if (myGamePieces[i].text == this.text) {
+								myGamePieces.splice(i, 1);
+							}
+						}
+					}
+				}
+				this.getText = function () {
+					return this.text;
+				}
+			}
+
+			function endGame() {
+				myGameArea.clear();
+				ctx = myGameArea.context;
+				ctx.font = "70px Arial"
+				ctx.fillStyle = "black";
+				ctx.fillText("Final Score: " + myGameArea.points, 10, myGameArea.canvas.height/2);
+				clearTimeout(myGameArea.interval);
+				clearTimeout(myGameArea.interval2);
+			}
+
+			function updateGameArea() {
+				myGameArea.clear();
+				for (const gamePiece of myGamePieces) {
+					gamePiece.newPos();
+					gamePiece.update();
+				}
+			}
+
+			function addWord() {
+				randomWords = ["hey", "abracadabra", "lovely", "email", "@hello", "!*#"];
+				var random = Math.round(Math.random() * (randomWords.length));
+				myGamePieces.push(new component("orange", randomWords[random]));
+			}
+
+			function updatePts() {
+				for (let i = 0; i < myGamePieces.length; i++) {
+					const gamePiece = myGamePieces[i];
+					if (gamePiece.getText() == document.getElementById("word").value) {
+						myGameArea.points += 10;
+						document.getElementById("pts").innerHTML = "Points: " + myGameArea.points;
+						myGamePieces.splice(i, 1);
+						document.getElementById("word").value = "";
+						if (myGamePieces.length == 0) {
+							addWord();
+							updateGameArea();
+						}
+						if (myGameArea.points % 50 == 0) {
+							myGameArea.decreaseTimer();
+						}
+						break;
+					}
+				}
+			}
+
+			window.onload = function () {
+				myGamePieces = [];
+				addWord();
+				myGameArea.start();
+				button = document.getElementById("button");
+			}
+		</script>
+
+</body>
+
+</html>
