@@ -1,0 +1,16 @@
+#wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#keyboard-input {
+    height: 1em;
+    width: 80vw;
+    position: absolute;
+    font-family: sans-serif;
+    font-size: 2em;
+    text-align: right;
+    background-color: #ccc;
+    border: 3px black solid;
+}
