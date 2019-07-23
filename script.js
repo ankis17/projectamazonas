@@ -5,7 +5,18 @@
     var spans;
     var typed;
     var curIndex = 0;
-    const list = ['ACCOUNT','ACCURATE','ACRES','ACROSS','ACT','ACTION','ACTIVE','ACTIVITY'];
+    const list = [
+        'como',
+        'esta',
+        'perro',
+        'gato',
+        'uno',
+        'dos',
+        'tres',
+        'quatro'
+    ];
+    let progressIncrement = (1/list.length) * 100;
+    let width = progressIncrement - 1;
 
     function random() {
         words.innerHTML = "";
@@ -44,6 +55,8 @@
                 document.removeEventListener("keydown", typing, false);
                 setTimeout(function(){
                     words.className = "words"; // restart the classes
+                    move(width);
+                    width+= progressIncrement;
                     random(); // give another word
                     document.addEventListener("keydown", typing, false);
                 }, 400);
@@ -53,3 +66,15 @@
 
     random();
     document.addEventListener("keydown", typing, false);
+
+    function move(width) {
+        var elem = document.getElementById("progressBar"); 
+        frame();
+        function frame() {
+          if (width >= 100) {
+            elem.style.width = 0;
+          } else {
+            elem.style.width = width + '%'; 
+          }
+        }
+      }
