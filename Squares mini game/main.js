@@ -1,58 +1,89 @@
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 const scoreDisplay = document.getElementById('scoreDisplay');
-const rectWidth = 100;
-const rectHeight = 100;
+const circleRadius = 50;
+const circles = [];
+const numCircles = 50;
+const sizeDecrease = 20
 let score = 0;
-let difficulty = 1;
-const squareShown = {
-	w: rectWidth,
-	h: rectHeight,
-	x: 100,
-	y: 200
-}
+let difficulty = 0;
+
+canvas.width = document.documentElement.clientWidth;
+canvas.height = document.documentElement.clientHeight;
 
 document.addEventListener("click", function(e){
-  checkUserClick(e.clientX, e.clientY)
+  checkUserClick(e.clientX, e.clientY);
 });
 
 const draw = () => {
 	canvas.width = document.documentElement.clientWidth;
 	canvas.height = document.documentElement.clientHeight;
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
-	ctx.font = "30px Arial";
-	ctx.fillText("Puntaje: " + score, 10, 50);
-	drawRectangle();
+	drawCircles();
 }
 
-const drawRectangle = () => {
-	ctx.beginPath();
-	ctx.rect(squareShown.x, squareShown.y, squareShown.w, squareShown.h);
-	ctx.fillStyle = "#AAA";
-	ctx.fill();
-    ctx.closePath();
+const drawCircles = () => {
+	for (let i = 0; i < circles.length; i++) {
+		drawCircle(circles[i]);
+	}
 }
+
+const drawCircle = (circle) => {
+	ctx.beginPath();
+	ctx.arc(circle.x, circle.y, circle.r, 0, 2 * Math.PI);
+	ctx.fillStyle = circle.color;
+	ctx.fill();
+	ctx.stroke(); 
+	ctx.closePath();
+}
+
 
 const checkUserClick = (userX, userY) => {
-	if(userX >= squareShown.x &&
-	userX <= squareShown.x + squareShown.w && 
-	userY >= squareShown.y &&
-	userY <= squareShown.y + squareShown.h){
-		score++;
-		generateSquareProps();
-		draw();
-	} 
+	for (let i = circles.length - 1; i >= 0; i--) {
+		let dx = circles[i].x - userX;
+		let dy = circles[i].y - userY;
+		let distance = Math.sqrt((dx * dx) + (dy * dy));
+		if(distance <= circles[i].r){
+			circles.splice(i,1);
+			if(circles.length === 0) generateNewCircles();
+			score++;
+			draw();
+			break;
+		} 
+	}
+	
 }
 
-const generateSquareProps = () => {
+const getRandomColor = () => {
+	let r = Math.floor(Math.random() * 256);
+	let g = Math.floor(Math.random()* 256);
+	let b = Math.floor(Math.random() * 256);
+	return "rgb(" + r + ", " + g + ", " + b + ")";
+}
+
+const generateCircleProps = (circle) => {
 	//Generate new coords so square changes
-	squareShown.x = Math.random() * (canvas.width - rectWidth);
-	squareShown.y = Math.random() * (canvas.height - rectHeight);
+	circle.x = Math.random() * (canvas.width - circleRadius);
+	circle.y = Math.random() * (canvas.height - circleRadius);
 	//Reset width
-	squareShown.w = rectWidth;
-	squareShown.h = rectHeight;
+	circle.r = circleRadius;
+	//Color
+	circle.color = getRandomColor();
 }	
 
+const generateNewCircle = () => {
+	let circle = {};
+	generateCircleProps(circle);
+	return circle;
+}
+
+const generateNewCircles = () => {
+	for (let i = 0; i < numCircles; i++) {
+		circles.push(generateNewCircle());
+	}
+}
+
+//Still has to be change to circles
 const decreaseSquareSize = () => {
 	if(squareShown.w >= 0 && squareShown.h >= 0){
 		squareShown.w--;
@@ -71,7 +102,7 @@ const gameOver = () => {
 }
 
 
-
+generateNewCircles();
 if(difficulty == 1){
 	setInterval(decreaseSquareSize, 50);
 }else{
