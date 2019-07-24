@@ -6,31 +6,30 @@
 }
 
 body {
-    background-color: #353535;
+    background-color: #B67B65;
     font-family: 'Raleway', sans-serif;
 }
 
 .wrapper {
-    max-width: 600px;
+    max-width: 2000px;
     margin: 0 auto;
     width: 100%;
     text-align: center;
     padding: 2%;
-    background-color: #424242;
+    background-color: #478966;
     height: 500px;
 }
 
-h1 {
-    color: #ecf0f1;
-}
-
-h1 + p {
-    margin-bottom: 5%;
-    color: #3498db;
-}
-
 .scoreWrap {float: left;}
-.timeWrap {float: right;}
+.wordsCompletedWrap {float: right;}
+.ProgressWrap {
+    text-align: left;
+    color: #ffffff;
+    font-size: 26px;
+    position: relative;
+    top: 50px;
+    bottom: 0px;
+}
 
 .outerWrap:after {
     content: "";
@@ -39,57 +38,41 @@ h1 + p {
 }
 
 .bg {
-    background-color: #04AF71;
+    background-color: rgb(4, 175, 33);
 }
 
 .bg-wrong {
     background-color: #FF0000;
 }
 
-button {
-   border: none;
-  background-color: #FF7373;
-  box-shadow: 0px 5px 0px 0px #CE4646;
-  outline: none;
-  border-radius: 5px;
-  padding: 10px 15px;
-  font-size: 22px;
-  text-decoration: none;
-  margin: 20px;
-  color: #fff;
-  position: relative;
-  display: inline-block;
-  cursor: pointer;
-}
-
-button:active {
-  transform: translate(0px, 5px);
-  -webkit-transform: translate(0px, 5px);
-  box-shadow: 0px 1px 0px 0px;
-}
-
-.scoreWrap p, .scoreWrap span, .timeWrap p, .timeWrap span {
+.scoreWrap p, .scoreWrap span, .timeWrap p, .timeWrap span, .wordsCompletedWrap p,  .wordsCompletedWrap span{
     font-size: 30px;
     color: #FF7373;
 }
 
 .wordsWrap {
     margin-top: 50px;
+    margin-bottom: 0px;
 }
 
 .words span{
-    font-size: 60px;
+    font-size: 80px;
     letter-spacing: 1px;
     color: #ECF0F1;
 }
 
 #progress {
+    position: relative;
+    top: 60px;
     width: 100%;
-    background-color: grey;
+    background-color: #E3C6AD;
 }
   
 #progressBar {
-width: 1%;
-height: 40px;
-background-color: #B67B65;
+    text-align: center; 
+    line-height: 30px; 
+    color: white; 
+    width: 0.1%;
+    height: 40px;
+    background-color: #B67B65;
 }
