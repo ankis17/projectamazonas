@@ -27,6 +27,7 @@
 
     function typing(e) {
             typed = String.fromCharCode(e.which);
+            console.log(typed);
                 if (spans[curIndex].innerHTML === typed) { // if typed letter is the one from the word
                         if (spans[curIndex].classList.contains("bg-wrong") ){
 
@@ -52,4 +53,4 @@
     }
 
     random();
-    document.addEventListener("keydown", typing, false);
+    document.addEventListener("keypress", typing, false);
