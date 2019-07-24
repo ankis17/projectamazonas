@@ -1,0 +1,34 @@
+img{
+    position: relative;
+    width: 70%;
+}
+.center{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+h1{
+    text-align: center;
+    font-size: 25pt;
+}
+body{
+    position: fixed;
+    text-align: center;
+    right: 15%;
+    left: 15%;
+    font-size: 13pt;
+}
+
+.type{
+    font-size: 25pt;
+}
+
+.green{
+    background-color: rgb(203, 224, 181);
+    color: black;
+}
+
+.red{
+    background-color: rgb(245, 126, 126);
+    color: black;
+}
