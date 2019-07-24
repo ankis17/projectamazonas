@@ -7,7 +7,7 @@
 	<style>
 		canvas {
 			border: 1px solid #d3d3d3;
-			background-color: #f1f1f1;
+			background-color: #177e89;
 		}
 	</style>
 </head>
@@ -17,7 +17,8 @@
 
 	<canvas id="canvas" height="700" width="1000"></canvas>
 
-	<p>Type the words as they fall down the screen - finish typing before they hit the bottom for points!<br>
+	<p id="instructions">Type the words as they fall down the screen - finish typing before they hit the bottom for
+		points!<br>
 		<input type="text" id="word" onkeyup="updatePts()">
 
 		<p id="pts"></p>
@@ -31,14 +32,15 @@
 					this.points = 0;
 					document.getElementById("pts").innerHTML = "Points: " + myGameArea.points;
 					document.body.insertBefore(this.canvas, document.body.childNodes[0]);
-					this.interval = setInterval(updateGameArea, 20);
-					this.timer = 4000;
-					this.interval2 = setInterval(addWord, this.timer);
-					setTimeout(endGame, 20000);
+					this.updating = setInterval(updateGameArea, 20);
+					this.speed = 4000;
+					this.addingWords = setInterval(addWord, this.speed);
+					this.timer = 60000;
+					this.subtractTime = setInterval(subTime, 1000);
 				},
-				decreaseTimer: function () {
-					if (this.timer > 500) {
-						this.timer -= 300;
+				increaseSpeed: function () {
+					if (this.speed > 500) {
+						this.speed -= 300;
 					}
 				},
 				stop: function () {
@@ -47,6 +49,13 @@
 				clear: function () {
 					canvas = document.getElementById("canvas");
 					this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+				}
+			}
+
+			function subTime() {
+				this.myGameArea.timer -= 1000;
+				if (this.myGameArea.timer <= 0) {
+					endGame();
 				}
 			}
 
@@ -64,6 +73,7 @@
 					ctx.font = "30px Arial"
 					ctx.fillStyle = "black";
 					ctx.fillText(text, this.x, this.y + (this.height - 5), this.width);
+					timerCountdown();
 				}
 				this.newPos = function () {
 					this.y += this.speed;
@@ -77,6 +87,7 @@
 						for (let i = 0; i < myGamePieces.length; i++) {
 							if (myGamePieces[i].text == this.text) {
 								myGamePieces.splice(i, 1);
+								break;
 							}
 						}
 					}
@@ -86,14 +97,26 @@
 				}
 			}
 
+			function timerCountdown() {
+				ctx = myGameArea.context;
+				ctx.fillStyle = "rgb(23, 126, 137)";
+				ctx.fillRect(this.myGameArea.canvas.width - 110, 10, 100, 40);
+				ctx.font = "40px Arial";
+				ctx.fillStyle = "black";
+				ctx.fillText("time left: " + this.myGameArea.timer / 1000, this.myGameArea.canvas.width - 110, 50, 100);
+			}
+
 			function endGame() {
 				myGameArea.clear();
 				ctx = myGameArea.context;
 				ctx.font = "70px Arial"
 				ctx.fillStyle = "black";
-				ctx.fillText("Final Score: " + myGameArea.points, 10, myGameArea.canvas.height/2);
-				clearTimeout(myGameArea.interval);
-				clearTimeout(myGameArea.interval2);
+				ctx.fillText("Final Score: " + myGameArea.points, 10, myGameArea.canvas.height / 2);
+				clearTimeout(myGameArea.updating);
+				clearTimeout(myGameArea.addingWords);
+				document.getElementById("instructions").style.visibility = "hidden";
+				document.getElementById("word").style.visibility = "hidden";
+				document.getElementById("pts").style.visibility = "hidden";
 			}
 
 			function updateGameArea() {
@@ -106,7 +129,7 @@
 
 			function addWord() {
 				randomWords = ["hey", "abracadabra", "lovely", "email", "@hello", "!*#"];
-				var random = Math.round(Math.random() * (randomWords.length));
+				var random = Math.round(Math.random() * (randomWords.length - 1));
 				myGamePieces.push(new component("orange", randomWords[random]));
 			}
 
@@ -123,7 +146,7 @@
 							updateGameArea();
 						}
 						if (myGameArea.points % 50 == 0) {
-							myGameArea.decreaseTimer();
+							myGameArea.increaseSpeed();
 						}
 						break;
 					}
