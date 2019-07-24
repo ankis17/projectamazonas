@@ -96,8 +96,16 @@ const drawFinalElapsedTime = () =>{
     ctx.font="40px Verdana"
     // draw the running time at half opacity
     ctx.fillText("Terminaste en " + elapsed +" segundos.", canvas.width / 2 - 500,canvas.height / 2);
-     ctx.fillText("Puedes hacerlo en menor tiempo?",canvas.width / 2 - 500,canvas.height / 2 + 100);
+    ctx.fillText("Puedes hacerlo en menor tiempo?",canvas.width / 2 - 500,canvas.height / 2 + 100);
     ctx.restore();
+    setTimeout(tryAgain, 3000);
+}
+
+const tryAgain = () => {
+	if(window.confirm("Intentar de nuevo?")){
+    	startTime = null;
+    	draw();
+    }
 }
 
 const drawElapsedTime = () =>{
