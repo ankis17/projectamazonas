@@ -12,7 +12,7 @@ let squaresClicked = 0;
 const sizeDecrease = 20;
 let score = 0;
 let difficulty = 0;
-let level = 5;
+let level = 1;
 let startTime = null;
 let theInterval;
 
