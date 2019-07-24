@@ -5,11 +5,13 @@
     var spans;
     var typed;
     var curIndex = 0;
+   var alphanumeric = /[ A-Za-z0-9]/; 
     const list = ['ACCOUNT','ACCURATE','ACRES','ACROSS','ACT','ACTION','ACTIVE','ACTIVITY'];
 
     function random() {
         words.innerHTML = "";
         curIndex = 0;
+        typed = "";
         var random = Math.floor(Math.random() * (7 - 0 + 1)) + 0;
         var wordArray = list[random].split("");
         for (var i = 0; i < wordArray.length; i++) { //building the words with spans around the letters
@@ -21,13 +23,18 @@
         spans = document.querySelectorAll(".span");
     }
 
-
+function validateKeypress(validChars, e) {
+    var keyChar = String.fromCharCode(e.which);
+    return validChars.test(keyChar) ? keyChar : false;
+}
 
 
 
     function typing(e) {
+           if(validateKeypress(alphanumeric, e)) {
             typed = String.fromCharCode(e.which);
-            console.log(typed);
+            //console.log(typed);
+            //console.log(curIndex);
                 if (spans[curIndex].innerHTML === typed) { // if typed letter is the one from the word
                         if (spans[curIndex].classList.contains("bg-wrong") ){
 
@@ -42,13 +49,14 @@
 
                 }
             if (curIndex === spans.length ) { // if so, animate the words with animate.css class
-                document.removeEventListener("keydown", typing, false);
+                document.removeEventListener("keypress", typing, false);
                 setTimeout(function(){
                     words.className = "words"; // restart the classes
                     random(); // give another word
-                    document.addEventListener("keydown", typing, false);
+                    document.addEventListener("keypress", typing, false);
                 }, 400);
             }
+           } 
 
     }
 
