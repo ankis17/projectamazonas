@@ -12,7 +12,7 @@ let squaresClicked = 0;
 const sizeDecrease = 20;
 let score = 0;
 let difficulty = 0;
-let level = 5;
+let level = 0;
 let startTime = null;
 let theInterval;
 
@@ -28,9 +28,9 @@ document.addEventListener('dblclick', function (e) {
 });
 
 const draw = () => {
-	// if(circles.length === 0 && squares.length === 0) {
-	// 	level++;
-	// }; //Starts at level 0 but inmmediatly goes to level 1
+	if(circles.length === 0 && squares.length === 0 && level < 5) {
+		level++;
+	}; //Starts at level 0 but inmmediatly goes to level 1
 	canvas.width = document.documentElement.clientWidth;
 	canvas.height = document.documentElement.clientHeight;
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -48,7 +48,7 @@ const draw = () => {
 		break;
 		case 2:
 			numCircles = 4;
-			generateNewCircles();
+			if(circles.length === 0) generateNewCircles();
 		break;
 		case 3:
 			ctx.fillText("Para pasar el nivel presiona sobre el circulo 2 veces rapidamente el boton izquiero del raton.", 20, 80);
@@ -61,7 +61,7 @@ const draw = () => {
 		break;
 		case 4:
 			numSquares = 4;
-			generateSquares();
+			if(squares.length === 0)generateSquares();
 		break;
 		case 5:
 			if(startTime === null){
@@ -70,6 +70,7 @@ const draw = () => {
 				numSquares = 5;
 				generateSquares();
 				generateNewCircles();
+				
 				// turn on the ticker and get a reference to the object
 				theInterval=setInterval(drawElapsedTime, 20);			
 			}
@@ -88,7 +89,7 @@ const draw = () => {
 const drawFinalElapsedTime = () =>{
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
 	ctx.font = "30px Arial";
-	ctx.fillText("Nivel " + level, 20, 50); 
+	ctx.fillText("Nivel" + level, 20, 50); 
     let elapsed = parseInt((new Date() - startTime)/1000);
     ctx.save();
     ctx.beginPath();
