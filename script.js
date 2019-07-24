@@ -1,29 +1,55 @@
-const keyboardInput = document.querySelector('#keyboard-input');
-const questionStrings = [
-   'TJ Lambert',
-   'happens to be a',
-   'really smart guy'
-]
-let questionIdx = 0;
-keyboardInput.textContent = questionStrings[questionIdx];
+    var button = document.querySelector("button");
+    var words = document.querySelector(".words");
+    var errorDiv = document.querySelector(".error");
+    var errors = 0;
+    var spans;
+    var typed;
+    var curIndex = 0;
+    const list = ['ACCOUNT','ACCURATE','ACRES','ACROSS','ACT','ACTION','ACTIVE','ACTIVITY'];
 
-function handleKeyPress(event) {
-    let text = keyboardInput.textContent;
-    if (event.key === text[0]) {
-        keyboardInput.style.color = 'black';
-        if (text.length === 1) {
-            questionIdx++;
-            if (questionIdx >= questionStrings.length) {
-                keyboardInput.textContent = '';
-            } else {
-                keyboardInput.textContent = questionStrings[questionIdx];
-            }
-        } else {
-            keyboardInput.textContent = text.slice(1)
+    function random() {
+        words.innerHTML = "";
+        curIndex = 0;
+        var random = Math.floor(Math.random() * (7 - 0 + 1)) + 0;
+        var wordArray = list[random].split("");
+        for (var i = 0; i < wordArray.length; i++) { //building the words with spans around the letters
+            var span = document.createElement("span");
+            span.classList.add("span");
+            span.innerHTML = wordArray[i];
+            words.appendChild(span);
         }
-    } else {
-        keyboardInput.style.color = 'red';
+        spans = document.querySelectorAll(".span");
     }
-}
 
-document.addEventListener('keydown', handleKeyPress);
+
+
+
+
+    function typing(e) {
+            typed = String.fromCharCode(e.which);
+                if (spans[curIndex].innerHTML === typed) { // if typed letter is the one from the word
+                        if (spans[curIndex].classList.contains("bg-wrong") ){
+
+                        spans[curIndex].classList.remove("bg-wrong");
+                        }
+                        spans[curIndex].classList.add("bg");
+                        curIndex +=1 ;
+                } else {
+                    errors +=1;
+                    errorDiv.innerHTML = errors;
+                    spans[curIndex].classList.add("bg-wrong");
+
+                }
+            if (curIndex === spans.length ) { // if so, animate the words with animate.css class
+                document.removeEventListener("keydown", typing, false);
+                setTimeout(function(){
+                    words.className = "words"; // restart the classes
+                    random(); // give another word
+                    document.addEventListener("keydown", typing, false);
+                }, 400);
+            }
+
+    }
+
+    random();
+    document.addEventListener("keydown", typing, false);
