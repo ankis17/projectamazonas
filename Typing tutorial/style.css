@@ -11,12 +11,18 @@ h1{
     text-align: center;
     font-size: 25pt;
 }
+h4{
+    padding-left: 5%;
+    padding-right: 5%;
+}
 body{
-    position: fixed;
+    position: relative;
     text-align: center;
-    right: 15%;
-    left: 15%;
+    padding-left: 25pt;
+    padding-right: 25pt;
     font-size: 13pt;
+    background-color: rgb(213,239,198);
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
 
 .type{
@@ -31,4 +37,39 @@ body{
 .red{
     background-color: rgb(245, 126, 126);
     color: black;
+}
+
+.darkGreen{
+    background-color: rgb(96, 131, 106);
+    color: black;
+}
+
+.orange{
+    background-color: rgb(255, 192, 0);
+    color: black;
+}
+
+.purple{
+    background-color: rgb(172, 124, 172);
+    color: black;
+}
+
+.blue{
+    background-color: rgba(0, 0, 255, 0.308);
+    color: black;
+}
+
+#intro{
+    font-size: 12pt;
+}
+
+button{
+    background-color: rgb(70, 128, 9);
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 25px;
 }
